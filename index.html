@@ -1,129 +1,38 @@
-<!doctype html>
-<html lang="id">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="claude:viewport-fit-sides" content="cover">
-<title>Pelanggaran Polisi dalam Angka</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap">
-<style>
-/* Layout: satu kolom seperti halaman artikel Project Multatuli: kertas hangat, tinta hitam, pita kuning. */
-:root {
-  --bg: #F2F0EB; --fg: #1A1A1A; --fg2: #4A463F; --muted: #7D776C; --rule: #D9D4C9;
-  --plate: #F2F0EB; --accent: #7A5500; --yellow: #FFB800; --on-yellow: #1A1A1A; --chip: #E6E2D8; --card: #FBFAF7;
-  --sans: 'Source Serif 4', 'Source Serif Pro', Georgia, serif;
-  --cond: 'Source Serif 4', 'Source Serif Pro', Georgia, serif;
-}
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
-  --bg: #161513; --fg: #F2F0EB; --fg2: #C9C3B6; --muted: #9A9385; --rule: #34312B;
-  --plate: #F2F0EB; --accent: #FFC633; --yellow: #FFB800; --on-yellow: #1A1A1A; --chip: #26241F; --card: #1E1C19; color-scheme: dark } }
-:root[data-theme="dark"] {
-  --bg: #161513; --fg: #F2F0EB; --fg2: #C9C3B6; --muted: #9A9385; --rule: #34312B;
-  --plate: #F2F0EB; --accent: #FFC633; --yellow: #FFB800; --on-yellow: #1A1A1A; --chip: #26241F; --card: #1E1C19; color-scheme: dark }
-body::before { content: ""; display: block; height: 8px; background: var(--yellow); }
-* { box-sizing: border-box; }
-body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--sans); font-size: 16px; line-height: 1.5; }
-a { color: inherit; }
-a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.wrap { max-width: 820px; margin: 0 auto; padding-block: 32px 64px;
-  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
-  display: grid; gap: 32px; }
-.wrap.wide { max-width: 1080px; }
-.wrap > *, figure, .plate { min-width: 0; }
-header { display: grid; gap: 10px; }
-.kicker { font-family: var(--cond); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--fg); font-size: 13px;
-  display: flex; align-items: center; gap: 8px; }
-.kicker::before { content: ""; width: 12px; height: 12px; background: var(--yellow); flex: none; }
-.brand { display: block; width: 236px; max-width: 64%; height: auto; background: #F2F0EB; padding: 8px 10px; border-radius: 4px; margin-left: -10px; }
-.back { font-size: 14px; color: var(--fg2); text-decoration: none; }
-.back:hover { text-decoration: underline; }
-h1 { font-family: var(--cond); font-weight: 700; font-size: clamp(28px, 5.6vw, 44px); line-height: 1.05; margin: 0; text-wrap: balance; }
-h2 { font-family: var(--cond); font-weight: 700; font-size: 24px; line-height: 1.15; margin: 0; }
-.lede { color: var(--fg2); max-width: 64ch; margin: 0; }
-.plate { background: var(--plate); border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; }
-.plate svg, .plate img { display: block; width: 100%; height: auto; }
-details { font-size: 14px; }
-summary { cursor: pointer; color: var(--fg2); font-weight: 600; padding: 4px 0; }
-.tbl { overflow-x: auto; margin-top: 8px; }
-table { border-collapse: collapse; min-width: 100%; font-variant-numeric: tabular-nums; }
-th, td { text-align: left; padding: 6px 12px 6px 0; border-bottom: 1px solid var(--rule); white-space: nowrap; }
-td:not(:first-child), th:not(:first-child) { text-align: right; }
-th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
-.files { color: var(--muted); margin: 8px 0 0; font-size: 13px; }
-code { font-size: 12px; background: var(--chip); padding: 1px 5px; border-radius: 3px; }
-.pager { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 14px; border-top: 1px solid var(--rule); padding-top: 16px; }
-.pager a { text-decoration: none; color: var(--fg2); max-width: 48%; }
-.pager a:hover { color: var(--fg); text-decoration: underline; }
-.pager b { display: block; color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
-
-.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-block: 1px solid var(--rule); }
-.stats div { padding: 16px 12px 14px 0; display: grid; gap: 2px; min-width: 0; }
-.stats div + div { padding-left: 16px; border-left: 1px solid var(--rule); }
-.stats b { font-family: var(--cond); font-size: clamp(24px, 4.4vw, 34px); line-height: 1; font-variant-numeric: tabular-nums; }
-.stats span { color: var(--fg2); font-size: 13px; }
-@media (max-width: 560px) { .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .stats div:nth-child(3) { padding-left: 0; border-left: 0; border-top: 1px solid var(--rule); }
-  .stats div:nth-child(4) { border-top: 1px solid var(--rule); } }
-section.part { display: grid; gap: 14px; }
-.part p { margin: 0; color: var(--fg2); font-size: 15px; max-width: 64ch; }
-.tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 16px; }
-.tile { display: grid; gap: 6px; align-content: start; text-decoration: none; min-width: 0; }
-.tile img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; object-position: left top; background: var(--plate);
-  border: 1px solid var(--rule); border-radius: 6px; }
-.tile .no { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); }
-.tile .hl { font-weight: 600; line-height: 1.3; }
-.tile:hover .hl { text-decoration: underline; }
-.cardlink { display: grid; gap: 4px; padding: 18px 20px; background: var(--card); border: 1px solid var(--rule); border-radius: 8px; text-decoration: none; }
-.cardlink:hover b { text-decoration: underline; }
-.cardlink span { color: var(--fg2); font-size: 14px; }
-.ext { border: 1px dashed var(--muted); border-radius: 6px; padding: 20px; display: grid; gap: 12px; }
-.ext ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 16px; }
-.ext li { display: grid; gap: 2px; }
-.ext li b { font-family: var(--cond); font-size: 28px; line-height: 1; font-variant-numeric: tabular-nums; }
-.ext li span { font-size: 13px; color: var(--fg2); }
-.ext .src { font-size: 13px; color: var(--accent); font-weight: 600; margin: 0; }
-footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--rule); padding-top: 16px; display: grid; gap: 4px; }
-footer p { margin: 0; }
-</style>
-</head>
-<body>
-<div class="wrap wide">
-  <header>
-    <img class="brand" src="aset/logo-project-multatuli.png" alt="Project Multatuli">
-    <div class="kicker">Pantau Polisi · Data</div>
-    <h1>Pelanggaran polisi dalam pemberitaan, Agustus 2021 – November 2026</h1>
-    <p class="lede">Dari 33.810 berita, Pantau Polisi mencatat 1.633 kasus pelanggaran dengan sedikitnya 3.145 polisi sebagai pelaku. Semua angka adalah batas bawah: hanya pelanggaran yang sampai ke pemberitaan yang tercatat.</p>
-  </header>
-  <section class="stats" aria-label="Angka kunci"><div><b>33.810</b><span>berita dianalisis</span></div><div><b>1.633</b><span>kasus unik</span></div><div><b>≥3.145</b><span>polisi pelaku</span></div><div><b>111</b><span>kasus dengan vonis tercatat</span></div></section>
-  <section class="part">
-    <h2>Gambaran umum</h2>
-    <p>Pola besar dari seluruh data: jenis pelanggaran, waktu, pangkat, wilayah, dan sanksi.</p>
-    <div class="tiles"><a class="tile" href="grafik/01-jenis-pelanggaran.html"><img src="svg/01-jenis-pelanggaran.svg" alt="" loading="lazy"><span class="hl">Narkotika, pelanggaran etik, dan kekerasan fisik paling sering diberitakan</span></a><a class="tile" href="grafik/02-kasus-per-tahun.html"><img src="svg/02-kasus-per-tahun.svg" alt="" loading="lazy"><span class="hl">Pelanggaran polisi yang diberitakan paling banyak terjadi pada 2022</span></a><a class="tile" href="grafik/03-pangkat-pelaku.html"><img src="svg/03-pangkat-pelaku.svg" alt="" loading="lazy"><span class="hl">Bintara mendominasi polisi pelaku yang pangkatnya diketahui</span></a><a class="tile" href="grafik/04-wilayah.html"><img src="svg/04-wilayah.svg" alt="" loading="lazy"><span class="hl">Sumatera Utara dan Sulawesi Selatan mencatat kasus terbanyak</span></a><a class="tile" href="grafik/05-sanksi-etik.html"><img src="svg/05-sanksi-etik.svg" alt="" loading="lazy"><span class="hl">Sanksi etik hanya terberitakan di 566 dari 1.633 kasus</span></a></div>
-  </section>
-  <section class="part">
-    <h2>Grafik untuk tulisan</h2>
-    <p>Grafik spesifik untuk pembahasan narkotika, kekerasan seksual, represi, kejahatan bermotif uang, dan vonis.</p>
-    <div class="tiles"><a class="tile" href="grafik/06-polisi-per-kelompok.html"><img src="svg/06-polisi-per-kelompok.svg" alt="" loading="lazy"><span class="hl">Kejahatan bermotif uang dan narkotika menyeret polisi paling banyak</span></a><a class="tile" href="grafik/07-narkotika-per-tahun.html"><img src="svg/07-narkotika-per-tahun.svg" alt="" loading="lazy"><span class="hl">Kasus narkotika yang menyeret polisi memuncak pada 2022</span></a><a class="tile" href="grafik/08-pangkat-narkotika-kekerasan-seksual.html"><img src="svg/08-pangkat-narkotika-kekerasan-seksual.svg" alt="" loading="lazy"><span class="hl">Mayoritas pelaku narkotika dan kekerasan seksual berpangkat Bintara</span></a><a class="tile" href="grafik/09-subkategori.html"><img src="svg/09-subkategori.svg" alt="" loading="lazy"><span class="hl">Pemerasan dan kekuatan berlebihan paling banyak menyeret polisi</span></a><a class="tile" href="grafik/10-sebaran-vonis.html"><img src="svg/10-sebaran-vonis.svg" alt="" loading="lazy"><span class="hl">Lebih dari separuh vonis: bebas, rehabilitasi, atau penjara di bawah 5 tahun</span></a><a class="tile" href="grafik/11-vonis-per-kategori.html"><img src="svg/11-vonis-per-kategori.svg" alt="" loading="lazy"><span class="hl">Hukuman berat hanya konsisten untuk pembunuhan</span></a></div>
-  </section>
-  <section class="part">
-    <h2>Untuk WordPress</h2>
-    <a class="cardlink" href="kode-sematan.html"><b>Kode sematan grafik →</b><span>Kode &lt;picture&gt; siap tempel: versi desktop dan ponsel bergantian otomatis.</span></a>
-    <a class="cardlink" href="html-dinamis.html"><b>Cadangan: grafik HTML dinamis →</b><span>Jika SVG tidak bisa dipakai. Satu potongan HTML per grafik, menyesuaikan lebar kolom otomatis.</span></a>
-  </section>
-  <section class="part">
-    <h2>Contoh kasus</h2>
-    <a class="cardlink" href="kartu-kasus.html"><b>Polisi di balik angka →</b><span>Kartu kasus berisi foto, nama, pangkat, jabatan, pelanggaran, dan vonis.</span></a>
-  </section>
-  <section class="ext" aria-label="Data eksternal">
-    <div class="kicker">Pembanding · sumber eksternal</div>
-    <h2>Angka dari Amnesty International Indonesia</h2>
-    <ul><li><b>6.003</b><span>Orang ditangkap selama protes 2025–2026</span></li><li><b>4.210</b><span>Dilepas tanpa dakwaan</span></li><li><b>406</b><span>Pembela HAM mengalami serangan (2 tahun pertama Prabowo-Gibran)</span></li><li><b>51</b><span>Dijerat UU ITE</span></li></ul>
-    <p class="src">Sumber: Amnesty International Indonesia. Angka diambil dari draf tulisan dan belum diverifikasi ke laporan aslinya. Bukan bagian dari data Pantau Polisi.</p>
-  </section>
-  <footer>
-    <p><b>Sumber:</b> Pemberitaan media 8 Agustus 2021 – 4 November 2026.</p>
-    <p>Angka adalah batas bawah. Jumlah polisi = polisi bernama + berinisial + anonim, menurut pelanggaran utama.</p>
-  </footer>
-</div>
-</body>
-</html>
+<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Visualisasi Data Pantau Polisi</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&amp;display=swap"><style>
+body{margin:0;background:#E9E6DF;color:#1A1A1A;font-family:'Source Serif 4',Georgia,serif}
+main{max-width:900px;margin:0 auto;padding:32px 16px 64px;display:grid;gap:44px}
+h1{font-size:28px;margin:0 0 8px} .intro p{margin:0 0 8px;font-size:16px;line-height:1.5;color:#4A463F}
+.h{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.h b{display:block;font-size:17px} .h a{font-size:13px;color:#7A5500;word-break:break-all}
+button{font:inherit;font-size:14px;font-weight:600;background:#FFB800;border:0;border-radius:4px;padding:7px 14px;cursor:pointer}
+textarea{width:100%;box-sizing:border-box;font:12px/1.4 ui-monospace,Menlo,monospace;background:#fff;border:1px solid #D9D5CC;border-radius:4px;padding:8px;margin-bottom:10px;resize:vertical}
+</style></head><body><main>
+<div class="intro"><h1>Visualisasi data Pantau Polisi</h1>
+<p>Setiap grafik punya halaman sendiri. Untuk menyematkan di WordPress: klik <b>Salin kode sematan</b>, lalu tempel ke blok <b>Custom HTML</b>. Tinggi grafik menyesuaikan otomatis dengan lebar kolom, termasuk di ponsel.</p></div>
+<section id="01-jenis-pelanggaran"><div class="h"><div><b>Narkotika, pelanggaran etik, dan kekerasan fisik paling sering diberitakan</b><a href="01-jenis-pelanggaran.html">https://mawakresna.github.io/visualisasi-data/01-jenis-pelanggaran.html</a></div><button type="button" data-for="c-01-jenis-pelanggaran">Salin kode sematan</button></div><textarea id="c-01-jenis-pelanggaran" readonly rows="3">&lt;iframe src=&quot;https://mawakresna.github.io/visualisasi-data/01-jenis-pelanggaran.html&quot; data-ppv=&quot;01-jenis-pelanggaran&quot; title=&quot;Narkotika, pelanggaran etik, dan kekerasan fisik paling sering diberitakan&quot; loading=&quot;lazy&quot; scrolling=&quot;no&quot; style=&quot;width:100%;height:750px;border:0;display:block;overflow:hidden&quot;&gt;&lt;/iframe&gt;
+&lt;script&gt;if(!window.ppvResize){window.ppvResize=1;addEventListener(&#x27;message&#x27;,function(e){if(e.origin!==&#x27;https://mawakresna.github.io&#x27;||!e.data||!e.data.ppv)return;var f=document.querySelectorAll(&#x27;iframe[data-ppv=&quot;&#x27;+e.data.ppv+&#x27;&quot;]&#x27;);for(var i=0;i&lt;f.length;i++)f[i].style.height=e.data.h+&#x27;px&#x27;;});}&lt;/script&gt;</textarea><iframe src="https://mawakresna.github.io/visualisasi-data/01-jenis-pelanggaran.html" data-ppv="01-jenis-pelanggaran" title="Narkotika, pelanggaran etik, dan kekerasan fisik paling sering diberitakan" loading="lazy" scrolling="no" style="width:100%;height:750px;border:0;display:block;overflow:hidden"></iframe>
+<script>if(!window.ppvResize){window.ppvResize=1;addEventListener('message',function(e){if(e.origin!=='https://mawakresna.github.io'||!e.data||!e.data.ppv)return;var f=document.querySelectorAll('iframe[data-ppv="'+e.data.ppv+'"]');for(var i=0;i<f.length;i++)f[i].style.height=e.data.h+'px';});}</script></section><section id="02-kasus-per-tahun"><div class="h"><div><b>Pelanggaran polisi yang diberitakan paling banyak terjadi pada 2022</b><a href="02-kasus-per-tahun.html">https://mawakresna.github.io/visualisasi-data/02-kasus-per-tahun.html</a></div><button type="button" data-for="c-02-kasus-per-tahun">Salin kode sematan</button></div><textarea id="c-02-kasus-per-tahun" readonly rows="3">&lt;iframe src=&quot;https://mawakresna.github.io/visualisasi-data/02-kasus-per-tahun.html&quot; data-ppv=&quot;02-kasus-per-tahun&quot; title=&quot;Pelanggaran polisi yang diberitakan paling banyak terjadi pada 2022&quot; loading=&quot;lazy&quot; scrolling=&quot;no&quot; style=&quot;width:100%;height:540px;border:0;display:block;overflow:hidden&quot;&gt;&lt;/iframe&gt;
+&lt;script&gt;if(!window.ppvResize){window.ppvResize=1;addEventListener(&#x27;message&#x27;,function(e){if(e.origin!==&#x27;https://mawakresna.github.io&#x27;||!e.data||!e.data.ppv)return;var f=document.querySelectorAll(&#x27;iframe[data-ppv=&quot;&#x27;+e.data.ppv+&#x27;&quot;]&#x27;);for(var i=0;i&lt;f.length;i++)f[i].style.height=e.data.h+&#x27;px&#x27;;});}&lt;/script&gt;</textarea><iframe src="https://mawakresna.github.io/visualisasi-data/02-kasus-per-tahun.html" data-ppv="02-kasus-per-tahun" title="Pelanggaran polisi yang diberitakan paling banyak terjadi pada 2022" loading="lazy" scrolling="no" style="width:100%;height:540px;border:0;display:block;overflow:hidden"></iframe>
+<script>if(!window.ppvResize){window.ppvResize=1;addEventListener('message',function(e){if(e.origin!=='https://mawakresna.github.io'||!e.data||!e.data.ppv)return;var f=document.querySelectorAll('iframe[data-ppv="'+e.data.ppv+'"]');for(var i=0;i<f.length;i++)f[i].style.height=e.data.h+'px';});}</script></section><section id="03-pangkat-pelaku"><div class="h"><div><b>Bintara mendominasi polisi pelaku yang pangkatnya diketahui</b><a href="03-pangkat-pelaku.html">https://mawakresna.github.io/visualisasi-data/03-pangkat-pelaku.html</a></div><button type="button" data-for="c-03-pangkat-pelaku">Salin kode sematan</button></div><textarea id="c-03-pangkat-pelaku" readonly rows="3">&lt;iframe src=&quot;https://mawakresna.github.io/visualisasi-data/03-pangkat-pelaku.html&quot; data-ppv=&quot;03-pangkat-pelaku&quot; title=&quot;Bintara mendominasi polisi pelaku yang pangkatnya diketahui&quot; loading=&quot;lazy&quot; scrolling=&quot;no&quot; style=&quot;width:100%;height:836px;border:0;display:block;overflow:hidden&quot;&gt;&lt;/iframe&gt;
+&lt;script&gt;if(!window.ppvResize){window.ppvResize=1;addEventListener(&#x27;message&#x27;,function(e){if(e.origin!==&#x27;https://mawakresna.github.io&#x27;||!e.data||!e.data.ppv)return;var f=document.querySelectorAll(&#x27;iframe[data-ppv=&quot;&#x27;+e.data.ppv+&#x27;&quot;]&#x27;);for(var i=0;i&lt;f.length;i++)f[i].style.height=e.data.h+&#x27;px&#x27;;});}&lt;/script&gt;</textarea><iframe src="https://mawakresna.github.io/visualisasi-data/03-pangkat-pelaku.html" data-ppv="03-pangkat-pelaku" title="Bintara mendominasi polisi pelaku yang pangkatnya diketahui" loading="lazy" scrolling="no" style="width:100%;height:836px;border:0;display:block;overflow:hidden"></iframe>
+<script>if(!window.ppvResize){window.ppvResize=1;addEventListener('message',function(e){if(e.origin!=='https://mawakresna.github.io'||!e.data||!e.data.ppv)return;var f=document.querySelectorAll('iframe[data-ppv="'+e.data.ppv+'"]');for(var i=0;i<f.length;i++)f[i].style.height=e.data.h+'px';});}</script></section><section id="04-wilayah"><div class="h"><div><b>Sumatera Utara dan Sulawesi Selatan mencatat kasus terbanyak</b><a href="04-wilayah.html">https://mawakresna.github.io/visualisasi-data/04-wilayah.html</a></div><button type="button" data-for="c-04-wilayah">Salin kode sematan</button></div><textarea id="c-04-wilayah" readonly rows="3">&lt;iframe src=&quot;https://mawakresna.github.io/visualisasi-data/04-wilayah.html&quot; data-ppv=&quot;04-wilayah&quot; title=&quot;Sumatera Utara dan Sulawesi Selatan mencatat kasus terbanyak&quot; loading=&quot;lazy&quot; scrolling=&quot;no&quot; style=&quot;width:100%;height:1096px;border:0;display:block;overflow:hidden&quot;&gt;&lt;/iframe&gt;
+&lt;script&gt;if(!window.ppvResize){window.ppvResize=1;addEventListener(&#x27;message&#x27;,function(e){if(e.origin!==&#x27;https://mawakresna.github.io&#x27;||!e.data||!e.data.ppv)return;var f=document.querySelectorAll(&#x27;iframe[data-ppv=&quot;&#x27;+e.data.ppv+&#x27;&quot;]&#x27;);for(var i=0;i&lt;f.length;i++)f[i].style.height=e.data.h+&#x27;px&#x27;;});}&lt;/script&gt;</textarea><iframe src="https://mawakresna.github.io/visualisasi-data/04-wilayah.html" data-ppv="04-wilayah" title="Sumatera Utara dan Sulawesi Selatan mencatat kasus terbanyak" loading="lazy" scrolling="no" style="width:100%;height:1096px;border:0;display:block;overflow:hidden"></iframe>
+<script>if(!window.ppvResize){window.ppvResize=1;addEventListener('message',function(e){if(e.origin!=='https://mawakresna.github.io'||!e.data||!e.data.ppv)return;var f=document.querySelectorAll('iframe[data-ppv="'+e.data.ppv+'"]');for(var i=0;i<f.length;i++)f[i].style.height=e.data.h+'px';});}</script></section><section id="05-sanksi-etik"><div class="h"><div><b>Sanksi etik hanya terberitakan di 566 dari 1.633 kasus</b><a href="05-sanksi-etik.html">https://mawakresna.github.io/visualisasi-data/05-sanksi-etik.html</a></div><button type="button" data-for="c-05-sanksi-etik">Salin kode sematan</button></div><textarea id="c-05-sanksi-etik" readonly rows="3">&lt;iframe src=&quot;https://mawakresna.github.io/visualisasi-data/05-sanksi-etik.html&quot; data-ppv=&quot;05-sanksi-etik&quot; title=&quot;Sanksi etik hanya terberitakan di 566 dari 1.633 kasus&quot; loading=&quot;lazy&quot; scrolling=&quot;no&quot; style=&quot;width:100%;height:480px;border:0;display:block;overflow:hidden&quot;&gt;&lt;/iframe&gt;
+&lt;script&gt;if(!window.ppvResize){window.ppvResize=1;addEventListener(&#x27;message&#x27;,function(e){if(e.origin!==&#x27;https://mawakresna.github.io&#x27;||!e.data||!e.data.ppv)return;var f=document.querySelectorAll(&#x27;iframe[data-ppv=&quot;&#x27;+e.data.ppv+&#x27;&quot;]&#x27;);for(var i=0;i&lt;f.length;i++)f[i].style.height=e.data.h+&#x27;px&#x27;;});}&lt;/script&gt;</textarea><iframe src="https://mawakresna.github.io/visualisasi-data/05-sanksi-etik.html" data-ppv="05-sanksi-etik" title="Sanksi etik hanya terberitakan di 566 dari 1.633 kasus" loading="lazy" scrolling="no" style="width:100%;height:480px;border:0;display:block;overflow:hidden"></iframe>
+<script>if(!window.ppvResize){window.ppvResize=1;addEventListener('message',function(e){if(e.origin!=='https://mawakresna.github.io'||!e.data||!e.data.ppv)return;var f=document.querySelectorAll('iframe[data-ppv="'+e.data.ppv+'"]');for(var i=0;i<f.length;i++)f[i].style.height=e.data.h+'px';});}</script></section><section id="06-polisi-per-kelompok"><div class="h"><div><b>Kejahatan bermotif uang dan narkotika menyeret polisi paling banyak</b><a href="06-polisi-per-kelompok.html">https://mawakresna.github.io/visualisasi-data/06-polisi-per-kelompok.html</a></div><button type="button" data-for="c-06-polisi-per-kelompok">Salin kode sematan</button></div><textarea id="c-06-polisi-per-kelompok" readonly rows="3">&lt;iframe src=&quot;https://mawakresna.github.io/visualisasi-data/06-polisi-per-kelompok.html&quot; data-ppv=&quot;06-polisi-per-kelompok&quot; title=&quot;Kejahatan bermotif uang dan narkotika menyeret polisi paling banyak&quot; loading=&quot;lazy&quot; scrolling=&quot;no&quot; style=&quot;width:100%;height:649px;border:0;display:block;overflow:hidden&quot;&gt;&lt;/iframe&gt;
+&lt;script&gt;if(!window.ppvResize){window.ppvResize=1;addEventListener(&#x27;message&#x27;,function(e){if(e.origin!==&#x27;https://mawakresna.github.io&#x27;||!e.data||!e.data.ppv)return;var f=document.querySelectorAll(&#x27;iframe[data-ppv=&quot;&#x27;+e.data.ppv+&#x27;&quot;]&#x27;);for(var i=0;i&lt;f.length;i++)f[i].style.height=e.data.h+&#x27;px&#x27;;});}&lt;/script&gt;</textarea><iframe src="https://mawakresna.github.io/visualisasi-data/06-polisi-per-kelompok.html" data-ppv="06-polisi-per-kelompok" title="Kejahatan bermotif uang dan narkotika menyeret polisi paling banyak" loading="lazy" scrolling="no" style="width:100%;height:649px;border:0;display:block;overflow:hidden"></iframe>
+<script>if(!window.ppvResize){window.ppvResize=1;addEventListener('message',function(e){if(e.origin!=='https://mawakresna.github.io'||!e.data||!e.data.ppv)return;var f=document.querySelectorAll('iframe[data-ppv="'+e.data.ppv+'"]');for(var i=0;i<f.length;i++)f[i].style.height=e.data.h+'px';});}</script></section><section id="07-narkotika-per-tahun"><div class="h"><div><b>Kasus narkotika yang menyeret polisi memuncak pada 2022</b><a href="07-narkotika-per-tahun.html">https://mawakresna.github.io/visualisasi-data/07-narkotika-per-tahun.html</a></div><button type="button" data-for="c-07-narkotika-per-tahun">Salin kode sematan</button></div><textarea id="c-07-narkotika-per-tahun" readonly rows="3">&lt;iframe src=&quot;https://mawakresna.github.io/visualisasi-data/07-narkotika-per-tahun.html&quot; data-ppv=&quot;07-narkotika-per-tahun&quot; title=&quot;Kasus narkotika yang menyeret polisi memuncak pada 2022&quot; loading=&quot;lazy&quot; scrolling=&quot;no&quot; style=&quot;width:100%;height:540px;border:0;display:block;overflow:hidden&quot;&gt;&lt;/iframe&gt;
+&lt;script&gt;if(!window.ppvResize){window.ppvResize=1;addEventListener(&#x27;message&#x27;,function(e){if(e.origin!==&#x27;https://mawakresna.github.io&#x27;||!e.data||!e.data.ppv)return;var f=document.querySelectorAll(&#x27;iframe[data-ppv=&quot;&#x27;+e.data.ppv+&#x27;&quot;]&#x27;);for(var i=0;i&lt;f.length;i++)f[i].style.height=e.data.h+&#x27;px&#x27;;});}&lt;/script&gt;</textarea><iframe src="https://mawakresna.github.io/visualisasi-data/07-narkotika-per-tahun.html" data-ppv="07-narkotika-per-tahun" title="Kasus narkotika yang menyeret polisi memuncak pada 2022" loading="lazy" scrolling="no" style="width:100%;height:540px;border:0;display:block;overflow:hidden"></iframe>
+<script>if(!window.ppvResize){window.ppvResize=1;addEventListener('message',function(e){if(e.origin!=='https://mawakresna.github.io'||!e.data||!e.data.ppv)return;var f=document.querySelectorAll('iframe[data-ppv="'+e.data.ppv+'"]');for(var i=0;i<f.length;i++)f[i].style.height=e.data.h+'px';});}</script></section><section id="08-pangkat-narkotika-kekerasan-seksual"><div class="h"><div><b>Mayoritas pelaku narkotika dan kekerasan seksual berpangkat Bintara</b><a href="08-pangkat-narkotika-kekerasan-seksual.html">https://mawakresna.github.io/visualisasi-data/08-pangkat-narkotika-kekerasan-seksual.html</a></div><button type="button" data-for="c-08-pangkat-narkotika-kekerasan-seksual">Salin kode sematan</button></div><textarea id="c-08-pangkat-narkotika-kekerasan-seksual" readonly rows="3">&lt;iframe src=&quot;https://mawakresna.github.io/visualisasi-data/08-pangkat-narkotika-kekerasan-seksual.html&quot; data-ppv=&quot;08-pangkat-narkotika-kekerasan-seksual&quot; title=&quot;Mayoritas pelaku narkotika dan kekerasan seksual berpangkat Bintara&quot; loading=&quot;lazy&quot; scrolling=&quot;no&quot; style=&quot;width:100%;height:555px;border:0;display:block;overflow:hidden&quot;&gt;&lt;/iframe&gt;
+&lt;script&gt;if(!window.ppvResize){window.ppvResize=1;addEventListener(&#x27;message&#x27;,function(e){if(e.origin!==&#x27;https://mawakresna.github.io&#x27;||!e.data||!e.data.ppv)return;var f=document.querySelectorAll(&#x27;iframe[data-ppv=&quot;&#x27;+e.data.ppv+&#x27;&quot;]&#x27;);for(var i=0;i&lt;f.length;i++)f[i].style.height=e.data.h+&#x27;px&#x27;;});}&lt;/script&gt;</textarea><iframe src="https://mawakresna.github.io/visualisasi-data/08-pangkat-narkotika-kekerasan-seksual.html" data-ppv="08-pangkat-narkotika-kekerasan-seksual" title="Mayoritas pelaku narkotika dan kekerasan seksual berpangkat Bintara" loading="lazy" scrolling="no" style="width:100%;height:555px;border:0;display:block;overflow:hidden"></iframe>
+<script>if(!window.ppvResize){window.ppvResize=1;addEventListener('message',function(e){if(e.origin!=='https://mawakresna.github.io'||!e.data||!e.data.ppv)return;var f=document.querySelectorAll('iframe[data-ppv="'+e.data.ppv+'"]');for(var i=0;i<f.length;i++)f[i].style.height=e.data.h+'px';});}</script></section><section id="09-subkategori"><div class="h"><div><b>Pemerasan dan kekuatan berlebihan paling banyak menyeret polisi</b><a href="09-subkategori.html">https://mawakresna.github.io/visualisasi-data/09-subkategori.html</a></div><button type="button" data-for="c-09-subkategori">Salin kode sematan</button></div><textarea id="c-09-subkategori" readonly rows="3">&lt;iframe src=&quot;https://mawakresna.github.io/visualisasi-data/09-subkategori.html&quot; data-ppv=&quot;09-subkategori&quot; title=&quot;Pemerasan dan kekuatan berlebihan paling banyak menyeret polisi&quot; loading=&quot;lazy&quot; scrolling=&quot;no&quot; style=&quot;width:100%;height:740px;border:0;display:block;overflow:hidden&quot;&gt;&lt;/iframe&gt;
+&lt;script&gt;if(!window.ppvResize){window.ppvResize=1;addEventListener(&#x27;message&#x27;,function(e){if(e.origin!==&#x27;https://mawakresna.github.io&#x27;||!e.data||!e.data.ppv)return;var f=document.querySelectorAll(&#x27;iframe[data-ppv=&quot;&#x27;+e.data.ppv+&#x27;&quot;]&#x27;);for(var i=0;i&lt;f.length;i++)f[i].style.height=e.data.h+&#x27;px&#x27;;});}&lt;/script&gt;</textarea><iframe src="https://mawakresna.github.io/visualisasi-data/09-subkategori.html" data-ppv="09-subkategori" title="Pemerasan dan kekuatan berlebihan paling banyak menyeret polisi" loading="lazy" scrolling="no" style="width:100%;height:740px;border:0;display:block;overflow:hidden"></iframe>
+<script>if(!window.ppvResize){window.ppvResize=1;addEventListener('message',function(e){if(e.origin!=='https://mawakresna.github.io'||!e.data||!e.data.ppv)return;var f=document.querySelectorAll('iframe[data-ppv="'+e.data.ppv+'"]');for(var i=0;i<f.length;i++)f[i].style.height=e.data.h+'px';});}</script></section><section id="10-sebaran-vonis"><div class="h"><div><b>Lebih dari separuh vonis: bebas, rehabilitasi, atau penjara di bawah 5 tahun</b><a href="10-sebaran-vonis.html">https://mawakresna.github.io/visualisasi-data/10-sebaran-vonis.html</a></div><button type="button" data-for="c-10-sebaran-vonis">Salin kode sematan</button></div><textarea id="c-10-sebaran-vonis" readonly rows="3">&lt;iframe src=&quot;https://mawakresna.github.io/visualisasi-data/10-sebaran-vonis.html&quot; data-ppv=&quot;10-sebaran-vonis&quot; title=&quot;Lebih dari separuh vonis: bebas, rehabilitasi, atau penjara di bawah 5 tahun&quot; loading=&quot;lazy&quot; scrolling=&quot;no&quot; style=&quot;width:100%;height:489px;border:0;display:block;overflow:hidden&quot;&gt;&lt;/iframe&gt;
+&lt;script&gt;if(!window.ppvResize){window.ppvResize=1;addEventListener(&#x27;message&#x27;,function(e){if(e.origin!==&#x27;https://mawakresna.github.io&#x27;||!e.data||!e.data.ppv)return;var f=document.querySelectorAll(&#x27;iframe[data-ppv=&quot;&#x27;+e.data.ppv+&#x27;&quot;]&#x27;);for(var i=0;i&lt;f.length;i++)f[i].style.height=e.data.h+&#x27;px&#x27;;});}&lt;/script&gt;</textarea><iframe src="https://mawakresna.github.io/visualisasi-data/10-sebaran-vonis.html" data-ppv="10-sebaran-vonis" title="Lebih dari separuh vonis: bebas, rehabilitasi, atau penjara di bawah 5 tahun" loading="lazy" scrolling="no" style="width:100%;height:489px;border:0;display:block;overflow:hidden"></iframe>
+<script>if(!window.ppvResize){window.ppvResize=1;addEventListener('message',function(e){if(e.origin!=='https://mawakresna.github.io'||!e.data||!e.data.ppv)return;var f=document.querySelectorAll('iframe[data-ppv="'+e.data.ppv+'"]');for(var i=0;i<f.length;i++)f[i].style.height=e.data.h+'px';});}</script></section><section id="11-vonis-per-kategori"><div class="h"><div><b>Hukuman berat hanya konsisten untuk pembunuhan</b><a href="11-vonis-per-kategori.html">https://mawakresna.github.io/visualisasi-data/11-vonis-per-kategori.html</a></div><button type="button" data-for="c-11-vonis-per-kategori">Salin kode sematan</button></div><textarea id="c-11-vonis-per-kategori" readonly rows="3">&lt;iframe src=&quot;https://mawakresna.github.io/visualisasi-data/11-vonis-per-kategori.html&quot; data-ppv=&quot;11-vonis-per-kategori&quot; title=&quot;Hukuman berat hanya konsisten untuk pembunuhan&quot; loading=&quot;lazy&quot; scrolling=&quot;no&quot; style=&quot;width:100%;height:545px;border:0;display:block;overflow:hidden&quot;&gt;&lt;/iframe&gt;
+&lt;script&gt;if(!window.ppvResize){window.ppvResize=1;addEventListener(&#x27;message&#x27;,function(e){if(e.origin!==&#x27;https://mawakresna.github.io&#x27;||!e.data||!e.data.ppv)return;var f=document.querySelectorAll(&#x27;iframe[data-ppv=&quot;&#x27;+e.data.ppv+&#x27;&quot;]&#x27;);for(var i=0;i&lt;f.length;i++)f[i].style.height=e.data.h+&#x27;px&#x27;;});}&lt;/script&gt;</textarea><iframe src="https://mawakresna.github.io/visualisasi-data/11-vonis-per-kategori.html" data-ppv="11-vonis-per-kategori" title="Hukuman berat hanya konsisten untuk pembunuhan" loading="lazy" scrolling="no" style="width:100%;height:545px;border:0;display:block;overflow:hidden"></iframe>
+<script>if(!window.ppvResize){window.ppvResize=1;addEventListener('message',function(e){if(e.origin!=='https://mawakresna.github.io'||!e.data||!e.data.ppv)return;var f=document.querySelectorAll('iframe[data-ppv="'+e.data.ppv+'"]');for(var i=0;i<f.length;i++)f[i].style.height=e.data.h+'px';});}</script></section></main>
+<script>document.querySelectorAll('button[data-for]').forEach(function(b){b.onclick=function(){var t=document.getElementById(b.dataset.for);
+t.select();(navigator.clipboard?navigator.clipboard.writeText(t.value):Promise.reject()).catch(function(){document.execCommand('copy')});
+b.textContent='Tersalin';setTimeout(function(){b.textContent='Salin kode sematan'},1500)}})</script><script>if(!window.ppvResize){window.ppvResize=1;addEventListener('message',function(e){if(e.origin!=='https://mawakresna.github.io'||!e.data||!e.data.ppv)return;var f=document.querySelectorAll('iframe[data-ppv="'+e.data.ppv+'"]');for(var i=0;i<f.length;i++)f[i].style.height=e.data.h+'px';});}</script></body></html>
