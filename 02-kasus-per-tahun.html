@@ -19,7 +19,7 @@ function PPVX(fig){
  function plot(rows,ld,vd,lm,vm){return '<div class="ppv-plot'+(lm==null?' ppv-stack':'')+'" style="--lab-d:'+ld+'px;--vw-d:'+vd+'px;--lab-m:'+(lm||0)+'px;--vw-m:'+vm+'px">'+rows+'</div>'}
  function empty(t){return '<div class="ppv-kosong">'+esc(t)+'</div>'}
  var q=new URLSearchParams(location.search),sel=fig.querySelector('select'),btns=fig.querySelectorAll('.ppv-tg button');
- var st={o:0,m:q.get('ukuran')==='polisi'?1:0};
+ var uk=q.get('ukuran'),st={o:0,m:uk==='polisi'?1:uk==='kasus'?0:(D.m0||0)};
  var want=q.get(D.param);if(want)for(var i=0;i<D.opts.length;i++)if(D.opts[i].id===want)st.o=i;
  sel.innerHTML='';var grp=null,cur=sel;
  D.opts.forEach(function(o,i){if(o.group!==grp){grp=o.group;if(grp){cur=document.createElement('optgroup');cur.label=grp;sel.appendChild(cur)}else cur=sel}
@@ -84,6 +84,14 @@ function PPVX(fig){
    '<div class="ppv-splitl"><b>Ada sanksi yang diberitakan: '+fmt(t.any)+' kasus</b><span>Tidak diberitakan: '+fmt(t.n-t.any)+' kasus</span></div>';
   return {dek:D.opts[o].label+': sanksi etik diberitakan di '+fmt(t.any)+' dari '+fmt(t.n)+' kasus.',body:plot(rows,260,90,null,40)+split,
    notes:['Satu kasus bisa mendapat lebih dari satu sanksi. Patsus adalah penahanan selama pemeriksaan, bukan sanksi akhir.']}},
+ sub:function(D,o,m){var G=o?[D.groups[o-1]]:D.groups,all=[];G.forEach(function(g){g.rows.forEach(function(r){all.push(r[1+m])})});
+  var mx=nice(Math.max.apply(null,all)),body='',K=0,Q=0;
+  G.forEach(function(g){var tk=0,tp=0;g.rows.forEach(function(r){tk+=r[1];tp+=r[2]});K+=tk;Q+=tp;
+   var rs=g.rows.slice().sort(function(a,b){return b[1+m]-a[1+m]});
+   var rows=rs.map(function(r){var v=r[1+m],w=r[2-m];return row({label:r[0],v:v,mx:mx,key:g.key,tip:r[0]+': '+fmt(r[2])+' polisi, '+fmt(r[1])+' kasus',vt:fmt(v),extra:'· '+fmt(w)+' '+M[1-m]})}).join('');
+   body+='<div class="ppv-gh"><b>'+sw(g.key)+esc(g.label)+'</b><span>'+fmt(tp)+' polisi · '+fmt(tk)+' kasus</span></div>'+plot(rows,290,130,null,100)});
+  return {dek:o?D.opts[o].label+': '+fmt(K)+' kasus dengan '+fmt(Q)+' polisi, menurut subkategori.':'Kekerasan seksual, represi, dan kejahatan bermotif uang, menurut subkategori.',
+   body:body,notes:o?[]:['Pilih kelompok untuk melihat satu kelompok saja.']}},
  vonis:function(D,o){var t=D.vonis[o],L=D.vlab,tot=0,ring=0;t.forEach(function(x,i){tot+=x;if(i<4)ring+=x});
   var dek=D.opts[o].label+': '+fmt(tot)+' kasus yang vonisnya tercatat di pemberitaan.';
   if(!tot)return {dek:dek,body:empty('Belum ada vonis yang tercatat di pemberitaan untuk pilihan ini.'),notes:[]};
